@@ -1,0 +1,17 @@
+services:
+  database:
+    image: postgres:latest
+    container_name: DB_PlayerShelf
+    restart: always
+    environment:
+      POSTGRES_DB: playershelf
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    volumes:
+      - ../PlayerShelf-data/db:/var/lib/postgresql
+
+volumes:
+  postgres_data:
+
