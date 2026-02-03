@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -26,5 +27,8 @@ func main() {
 
 	// Start server on port 8080 (default)
 	// Server will listen on 0.0.0.0:8080 (localhost:8080 on Windows)
-	r.Run()
+	err := r.Run()
+	if err != nil {
+		log.Fatalf("Gin server failed to run: %v", err)
+	}
 }
