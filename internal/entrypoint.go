@@ -18,13 +18,20 @@ func Run(ctx context.Context) {
 		log.Fatal("Error loading .env file")
 	}
 
+	dbConnectionString := os.Getenv("DATABASE_URL")
+
 	// Create DB connection
-	dbPool, err := database.NewPostgresPool(ctx, os.Getenv("DATABASE_URL"))
+	dbPool, err := database.NewPostgresPool(ctx, dbConnectionString)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to DB %v\n", err)
 	}
-
 	defer dbPool.Close()
+
+	// Run migrations
+	err = database.RunMigrations(dbConnectionString)
+	if err != nil {
+		log.Fatalf("Failed to run migrations: %v", err)
+	}
 
 	// Test query
 	var greeting string

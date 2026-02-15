@@ -26,3 +26,4 @@ Some things that are nice to have, if possible.
 - [air](https://github.com/air-verse/air)
 - GO
 - Just (To run commands)
+- go-migrate (to create migrations)
