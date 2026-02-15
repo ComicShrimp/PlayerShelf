@@ -1,13 +1,19 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net/http"
 
+	"github.com/ComicShrimp/PlayerShelf/internal"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
+	ctx := context.Background()
+
+	internal.Run(ctx)
+
 	// Create a Gin router with default middleware (logger and recovery)
 	r := gin.Default()
 
