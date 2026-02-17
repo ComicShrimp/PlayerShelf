@@ -6,7 +6,9 @@ import (
 	"net/http"
 
 	"github.com/ComicShrimp/PlayerShelf/internal"
-	"github.com/gin-gonic/gin"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/render"
 )
 
 func main() {
@@ -14,27 +16,21 @@ func main() {
 
 	internal.Run(ctx)
 
-	// Create a Gin router with default middleware (logger and recovery)
-	r := gin.Default()
+	r := chi.NewRouter()
+	r.Use(middleware.Logger)
+	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
+		user := struct {
+			Message string `json:"message"`
+		}{
+			Message: "Hello World!",
+		}
 
-	r.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "Hello World",
-		})
+		// This sets Content-Type to application/json automatically
+		render.JSON(w, r, user)
 	})
 
-	// Define a simple GET endpoint
-	r.GET("/ping", func(c *gin.Context) {
-		// Return JSON response
-		c.JSON(http.StatusOK, gin.H{
-			"message": "pong",
-		})
-	})
-
-	// Start server on port 8080 (default)
-	// Server will listen on 0.0.0.0:8080 (localhost:8080 on Windows)
-	err := r.Run()
+	err := http.ListenAndServe(":3000", r)
 	if err != nil {
-		log.Fatalf("Gin server failed to run: %v", err)
+		log.Fatalf("Unable to run Chi server %v\n", err)
 	}
 }
