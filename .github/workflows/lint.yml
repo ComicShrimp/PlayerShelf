@@ -7,8 +7,8 @@ on:
   pull_request:
 
 jobs:
-  golangci:
-    name: Verify Lint
+  backend:
+    name: Verify Backend Lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -17,3 +17,5 @@ jobs:
           go-version: '1.25.x'
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v9
+        with:
+          working-directory: backend
