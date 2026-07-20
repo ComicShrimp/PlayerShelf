@@ -1,4 +1,4 @@
-module github.com/ComicShrimp/PlayerShelf
+module github.com/ComicShrimp/PlayerShelf/backend
 
 go 1.25.5
 

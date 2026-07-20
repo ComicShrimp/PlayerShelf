@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/ComicShrimp/PlayerShelf/internal"
+	"github.com/ComicShrimp/PlayerShelf/backend/internal/"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/render"
