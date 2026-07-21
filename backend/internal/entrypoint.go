@@ -7,7 +7,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/ComicShrimp/PlayerShelf/internal/infra/database"
+	"github.com/ComicShrimp/PlayerShelf/backend/internal/infra/database"
 	"github.com/joho/godotenv"
 )
 

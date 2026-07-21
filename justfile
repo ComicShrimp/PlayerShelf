@@ -1,11 +1,14 @@
 set dotenv-load := true
+set working-directory := 'backend'
 
 hot-reload:
   air
 
+[no-cd]
 start-db:
   docker compose up -d
 
+[no-cd]
 stop-db:
   docker compose down
 
