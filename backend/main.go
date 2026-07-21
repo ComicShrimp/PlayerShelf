@@ -42,5 +42,8 @@ func main() {
 	})
 
 	// Start the server!
-	http.ListenAndServe("127.0.0.1:8888", router)
+	err := http.ListenAndServe("127.0.0.1:8888", router)
+	if err != nil {
+		return
+	}
 }
