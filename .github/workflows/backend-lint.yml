@@ -5,11 +5,16 @@ on:
     branches:
       - main
   pull_request:
+  paths:
+    - backend/**
 
 jobs:
   backend:
     name: Verify Backend Lint
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-go@v6
@@ -17,5 +22,3 @@ jobs:
           go-version: '1.25.x'
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v9
-        with:
-          working-directory: backend

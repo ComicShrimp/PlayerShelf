@@ -9,7 +9,11 @@ require (
 	github.com/joho/godotenv v1.5.1
 )
 
-require github.com/danielgtaylor/huma/v2 v2.39.0 // indirect
+require (
+	github.com/danielgtaylor/huma/v2 v2.39.0 // indirect
+	github.com/fxamacker/cbor/v2 v2.9.2 // indirect
+	github.com/x448/float16 v0.8.4 // indirect
+)
 
 require (
 	github.com/ajg/form v1.7.1 // indirect

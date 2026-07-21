@@ -2,35 +2,45 @@ package main
 
 import (
 	"context"
-	"log"
+	"fmt"
 	"net/http"
 
-	"github.com/ComicShrimp/PlayerShelf/backend/internal"
+	"github.com/danielgtaylor/huma/v2"
+	"github.com/danielgtaylor/huma/v2/adapters/humachi"
 	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
-	"github.com/go-chi/render"
+
+	_ "github.com/danielgtaylor/huma/v2/formats/cbor"
 )
 
+// GreetingOutput represents the greeting operation response.
+type GreetingOutput struct {
+	Body struct {
+		Message string `json:"message" example:"Hello, world!" doc:"Greeting message"`
+	}
+}
+
 func main() {
-	ctx := context.Background()
+	// Create a new router & API
+	router := chi.NewMux()
+	api := humachi.New(router, huma.DefaultConfig("My API", "1.0.0"))
 
-	internal.Run(ctx)
-
-	r := chi.NewRouter()
-	r.Use(middleware.Logger)
-	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		user := struct {
-			Message string `json:"message"`
-		}{
-			Message: "Hello World!",
-		}
-
-		// This sets Content-Type to application/json automatically
-		render.JSON(w, r, user)
+	// Register GET /greeting/{name}
+	huma.Register(api, huma.Operation{
+		OperationID: "get-greeting",
+		Method:      http.MethodGet,
+		Path:        "/greeting/{name}",
+		Summary:     "Get a greeting",
+		Description: "Get a greeting for a person by name.",
+		Tags:        []string{"Greetings"},
+	}, func(ctx context.Context, input *struct {
+		Name string `path:"name" maxLength:"30" example:"world" doc:"Name to greet"`
+	},
+	) (*GreetingOutput, error) {
+		resp := &GreetingOutput{}
+		resp.Body.Message = fmt.Sprintf("Hello, %s!", input.Name)
+		return resp, nil
 	})
 
-	err := http.ListenAndServe(":3000", r)
-	if err != nil {
-		log.Fatalf("Unable to run Chi server %v\n", err)
-	}
+	// Start the server!
+	http.ListenAndServe("127.0.0.1:8888", router)
 }
