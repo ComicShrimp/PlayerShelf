@@ -2,14 +2,14 @@ FROM golang:1.25.5-alpine AS build
 
 WORKDIR /app
 
-COPY go.mod go.sum ./
+COPY backend/go.mod backend/go.sum ./
 RUN go mod download
 
-COPY . .
+COPY backend/. .
 
-RUN go build -o main main.go
+RUN CGO_ENABLED=0 go build -o main backend/main.go
 
-FROM alpine:latest AS prod
+FROM scratch
 WORKDIR /app
 
 COPY --from=build /app/main /app/main
